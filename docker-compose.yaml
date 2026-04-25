@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  bridge:
+    build: .
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./bridge:/app/bridge
+    environment:
+      - ROBOT_SWARM_SIZE=2
+    restart: always

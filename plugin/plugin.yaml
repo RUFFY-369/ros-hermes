@@ -1,0 +1,4 @@
+name: ros-hermes
+version: 1.0.0
+description: "Multi-agent robotics swarm control for ROS2 and Synthetic environments."
+author: "Ruffy & Antigravity"

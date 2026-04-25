@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ROS-Hermes Executive Command Center</title>
+    <style>
+        body { margin: 0; background: #0a0a0a; color: #00ff00; font-family: 'Courier New', monospace; overflow: hidden; }
+        #header { height: 60px; background: #1a1a1a; display: flex; align-items: center; padding: 0 20px; border-bottom: 2px solid #333; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        h1 { font-size: 20px; margin: 0; letter-spacing: 2px; }
+        #container { display: flex; height: calc(100vh - 60px); }
+        #feed-container { flex: 1; display: flex; flex-direction: column; padding: 20px; background: #000; }
+        #feed { border: 2px solid #444; width: 100%; height: auto; max-height: 80vh; object-fit: contain; box-shadow: 0 0 30px rgba(0,255,0,0.1); }
+        #sidebar { width: 350px; background: #111; border-left: 2px solid #333; padding: 20px; overflow-y: auto; }
+        .stat-box { background: #1a1a1a; padding: 15px; margin-bottom: 20px; border: 1px solid #333; border-radius: 4px; }
+        .label { color: #888; font-size: 12px; margin-bottom: 5px; text-transform: uppercase; }
+        .value { font-size: 24px; font-weight: bold; }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        .status-green { color: #00ff00; }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div style="width: 15px; height: 15px; background: #00ff00; border-radius: 50%; margin-right: 15px;" class="pulse"></div>
+        <h1>ROS-HERMES EXECUTIVE COMMAND CENTER v1.0</h1>
+        <div style="margin-left: auto; font-size: 14px;">SYS_STATUS: <span class="status-green">OPERATIONAL</span></div>
+    </div>
+    <div id="container">
+        <div id="feed-container">
+            <img id="feed" src="/video_feed" alt="Live Stream">
+            <div style="margin-top: 15px; font-size: 12px; color: #666;">LIVE FEED: TACTICAL_2D_RADAR [TOP] | CINEMATIC_3D_FPV [BOTTOM]</div>
+        </div>
+        <div id="sidebar">
+            <div class="stat-box">
+                <div class="label">Robot Position (X, Y)</div>
+                <div class="value" id="pos">0.00, 0.00</div>
+            </div>
+            <div class="stat-box">
+                <div class="label">Target Coordinates</div>
+                <div class="value" id="target">WAITING...</div>
+            </div>
+            <div class="stat-box">
+                <div class="label">Detection Stream</div>
+                <div id="objects" style="font-size: 14px; color: #00ccff;">
+                    Scanning...
+                </div>
+            </div>
+            <div style="font-size: 11px; color: #444; border-top: 1px solid #333; padding-top: 10px;">
+                C_PROTOCOL: C = ⟨A, O, V, L⟩<br>
+                SAFETY_LAYER: ACTIVE<br>
+                AUDIT_LOGGING: PERSISTENT
+            </div>
+        </div>
+    </div>
+    <script>
+        async function updateStats() {
+            try {
+                const res = await fetch('/observation');
+                const data = await res.json();
+                document.getElementById('pos').innerText = `${data.pose.x.toFixed(2)}, ${data.pose.y.toFixed(2)}`;
+                
+                let objHtml = "";
+                data.vision.objects.forEach(o => {
+                    objHtml += `<div style="margin-bottom: 5px;">> ${o.label.toUpperCase()} [${(o.confidence*100).toFixed(0)}%] AT (${o.x.toFixed(2)}, ${o.y.toFixed(2)})</div>`;
+                });
+                document.getElementById('objects').innerHTML = objHtml || "CLEAR_SKY";
+            } catch (e) {}
+        }
+        setInterval(updateStats, 200);
+    </script>
+</body>
+</html>

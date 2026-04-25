@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+httpx
+pydantic
+ultralytics
+opencv-python
+numpy<2.1
+websockets
+pyyaml
+pytest
