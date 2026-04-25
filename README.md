@@ -1,6 +1,6 @@
 # 🛸 ROS-Hermes Framework
 
-A production-grade bridge connecting the **Hermes AI Agent** with a **ROS2-compatible robotics swarm**. This framework enables high-level agentic coordination, real-time tactical sensing, and automated hardware discovery.
+A production-grade bridge connecting the [**Hermes AI Agent**](https://github.com/NousResearch/hermes-agent) with a **ROS2-compatible robotics swarm**. This framework enables high-level agentic coordination, real-time tactical sensing, and automated hardware discovery.
 
 ## 🏛️ The Five-Pillar Architecture
 1.  **The Plugin**: Native Hermes integration for "Sense, Act, Discover" toolsets.
