@@ -1,4 +1,4 @@
-# 🛸 ROS-Hermes Swarm Production Framework
+# 🛸 ROS-Hermes Framework
 
 A production-grade bridge connecting the **Hermes AI Agent** with a **ROS2-compatible robotics swarm**. This framework enables high-level agentic coordination, real-time tactical sensing, and automated hardware discovery.
 
